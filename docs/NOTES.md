@@ -92,3 +92,21 @@ What I learn while building this, in my own words. One entry per task.
   the node and the trace has no LLM runs. A test now checks this.
 - First real turns: gpt-oss-120b 13.9 s, qwen3-30b-a3b 9.7 s, both about
   30,000 input tokens a turn (the prompt alone is about 13,600).
+- Claude Haiku 5.5 answered the same question in 6.4 s, in the right order,
+  but read about 48,700 input tokens against Workers AI's 30,000: a different
+  tokenizer and tool format. Prompt caching is off here (the support coati
+  has it on); worth a look if Claude wins the evals.
+
+## Task 10: the evals (2026-11-11)
+
+- The eval runner posts to `/invoke` directly, like coati-agent's local
+  target runs its agent: a pending `check_readiness` is scored as the call.
+- Each `search_docs` step becomes a retriever span with the chunks it
+  returned, looked up by heading and page in `src/index.json`, so the
+  groundedness judge reads the same text the model did.
+- Claude Haiku 5.5 won: 24/30 facts, the same as the Databricks lab's best,
+  and the fastest (2.4 s p50). gpt-oss-120b searched the right page less
+  often (9/16) and skipped `get_plans` 4 times in 6.
+- LangSmith's `evaluate()` takes a target function and evaluators that
+  return `{key, score}`; the dataset is made once (`coati-evals`) and every
+  run is an experiment on it.

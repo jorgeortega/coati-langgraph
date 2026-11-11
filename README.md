@@ -11,6 +11,8 @@ so the two can be compared side by side.
 - **Try it:** [latitude10.tech/labs/langchain-agent](https://latitude10.tech/labs/langchain-agent).
   Ask about the platform, the plans or the docs, or give it the URL of an
   OpenAPI document to score. Each answer shows its sources and how it got there.
+- **How it works, visually:** [How the LangGraph lab works](https://claude.ai/artifact/XKXxrJozB1QAc3Yg9X3BfB),
+  a step-through of one real question, the graph, the traces and the evals.
 
 ## How it works
 

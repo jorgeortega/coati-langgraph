@@ -18,6 +18,7 @@ import {
   type ToolCall,
 } from '@langchain/core/messages';
 import type { Callbacks } from '@langchain/core/callbacks/manager';
+import type { RunnableConfig } from '@langchain/core/runnables';
 import { Annotation, END, MessagesAnnotation, START, StateGraph } from '@langchain/langgraph';
 import { CLIENT_CITATIONS, CLIENT_TOOLS, type Citation, type ServerTool, clientToolError } from './tools.ts';
 import { NO_USAGE, type Step, type Usage, addCitations, addUsage } from './trace.ts';
@@ -51,7 +52,9 @@ export type Turn = {
 };
 
 // What the graph needs from a chat model: tools already bound (src/model.ts).
-export type ChatModel = { invoke(messages: BaseMessage[]): Promise<AIMessage> };
+// The node passes its run config on, so LangSmith's callbacks reach the
+// model call (Task 8: without it the trace had no LLM runs).
+export type ChatModel = { invoke(messages: BaseMessage[], config?: RunnableConfig): Promise<AIMessage> };
 
 export type GraphOptions = {
   model: ChatModel;
@@ -101,10 +104,10 @@ function callsOf(reply: AIMessage): { calls: ToolCall[]; invalid: Set<string> } 
 export function buildGraph({ model, system, tools, clock = () => Date.now() }: GraphOptions) {
   const msSince = (started: number) => Math.round(clock() - started);
 
-  async function callModel(state: S): Promise<Partial<S>> {
+  async function callModel(state: S, config?: RunnableConfig): Promise<Partial<S>> {
     if (state.calls >= MAX_STEPS) return { answer: GIVE_UP };
     const started = clock();
-    const reply = await model.invoke([new SystemMessage(system), ...state.messages]);
+    const reply = await model.invoke([new SystemMessage(system), ...state.messages], config);
     const usage = {
       input_tokens: reply.usage_metadata?.input_tokens ?? 0,
       output_tokens: reply.usage_metadata?.output_tokens ?? 0,

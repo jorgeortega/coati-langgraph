@@ -10,11 +10,14 @@ type Reply = { text?: string; calls?: { name: string; args: Record<string, unkno
 // Answers from a script, one reply per call, and remembers what it was sent.
 function fakeModel(script: Reply[]) {
   const seen: BaseMessage[][] = [];
+  const configs: unknown[] = [];
   let i = 0;
   return {
     seen,
-    async invoke(messages: BaseMessage[]) {
+    configs,
+    async invoke(messages: BaseMessage[], config?: unknown) {
       seen.push(messages);
+      configs.push(config);
       const reply = script[Math.min(i++, script.length - 1)]!;
       return new AIMessage({
         content: reply.text ?? '',
@@ -166,6 +169,15 @@ describe('the graph', () => {
     ]);
     const closing = model.seen[0]!.find((m) => m instanceof ToolMessage)!;
     expect(closing.content).toBe(NOT_RUN.replace('{name}', 'check_readiness'));
+  });
+
+  it('passes its run config (and so the LangSmith callbacks) on to the model', async () => {
+    const model = fakeModel([{ text: 'Hi.' }]);
+    const graph = buildGraph({ model, system: 'SYSTEM', tools });
+    const tracer = { name: 'probe-tracer' };
+    await runTurn(graph, question, { callbacks: [tracer as never] });
+    const config = model.configs[0] as { callbacks?: unknown } | undefined;
+    expect(config?.callbacks).toBeDefined();
   });
 
   it('reports only the fields the site trace scrubber reads', async () => {

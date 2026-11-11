@@ -81,3 +81,14 @@ What I learn while building this, in my own words. One entry per task.
 - The redactor is the site's `redact`, copied, plus the provider keys this
   Worker holds. It reads LangChain messages through their `toJSON`, so it
   never changes the agent's own copies.
+
+## Task 8: real models (2026-11-11)
+
+- Workers AI through ChatOpenAI: the base URL is the account's `/ai/v1`, and
+  the header `cf-aig-gateway-id` routes the call through the AI Gateway, so
+  its rate limit applies.
+- A LangGraph node gets the run's config as its second argument. Pass it on
+  to `model.invoke(messages, config)`, or the callbacks (LangSmith) stop at
+  the node and the trace has no LLM runs. A test now checks this.
+- First real turns: gpt-oss-120b 13.9 s, qwen3-30b-a3b 9.7 s, both about
+  30,000 input tokens a turn (the prompt alone is about 13,600).

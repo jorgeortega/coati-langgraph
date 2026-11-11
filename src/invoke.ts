@@ -10,6 +10,10 @@ import { redactValues } from './redact.ts';
 export type Env = {
   AI: Ai;
   COATI_MODEL?: string;
+  CLOUDFLARE_ACCOUNT_ID?: string;
+  CLOUDFLARE_AI_TOKEN?: string;
+  AI_GATEWAY_ID?: string;
+  ANTHROPIC_API_KEY?: string;
   LANGSMITH_API_KEY?: string;
   LANGSMITH_PROJECT?: string;
   LANGSMITH_ENDPOINT?: string;

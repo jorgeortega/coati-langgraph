@@ -1,6 +1,12 @@
 # Copy to .dev.vars (git-ignored) for `npx wrangler dev`. Never commit values.
-# fake answers without calling a model; Task 8 adds the real ones.
+# fake | gpt-oss-120b | qwen3-30b-a3b | claude-haiku-5-5 (src/model.ts)
 COATI_MODEL=fake
+# Workers AI, through the AI Gateway (its rate limit is the cap).
+# CLOUDFLARE_ACCOUNT_ID=
+# CLOUDFLARE_AI_TOKEN=
+# AI_GATEWAY_ID=coati-langgraph
+# Claude, a key from the Console workspace "labs" (its spend limit is the cap).
+# ANTHROPIC_API_KEY=
 # LangSmith tracing is on only when this is set (Task 7).
 # LANGSMITH_API_KEY=
 # LANGSMITH_PROJECT=coati-langgraph

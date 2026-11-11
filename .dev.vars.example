@@ -1,0 +1,6 @@
+# Copy to .dev.vars (git-ignored) for `npx wrangler dev`. Never commit values.
+# fake answers without calling a model; Task 8 adds the real ones.
+COATI_MODEL=fake
+# LangSmith tracing is on only when this is set (Task 7).
+# LANGSMITH_API_KEY=
+# LANGSMITH_PROJECT=coati-langgraph

@@ -1,0 +1,18 @@
+{
+  // The coati on LangGraph. No route: the site reaches it only through a
+  // service binding (spec L1), so it has no public URL.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "coati-langgraph",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-28",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": false,
+  "preview_urls": false,
+  "observability": { "enabled": true },
+  // Workers AI: search_docs embeds each query (src/search.ts).
+  "ai": { "binding": "AI", "remote": true },
+  // The site's export in data/ is bundled as text (src/prompt.ts).
+  "rules": [{ "type": "Text", "globs": ["**/*.txt", "**/*.md", "**/*.jsonl"], "fallthrough": true }]
+  // Secrets (never in this file): LANGSMITH_API_KEY, CLOUDFLARE_AI_TOKEN,
+  // ANTHROPIC_API_KEY. Locally they go in .dev.vars.
+}

@@ -1,0 +1,7 @@
+[
+  {"id": "d01", "question": "What does a CI project key start with, and how do you store it?", "page": "https://docs.latitude10.tech/get-started/keys-and-tokens"},
+  {"id": "d03", "question": "My hosted MCP setup says 'Leave out the port'. Why?", "page": "https://docs.latitude10.tech/hosted-mcp/refused-hosts", "known_miss": "coati-agent misses it too (evals/results/2026-11-10-qwen35-122b-a10b-v5.json: expected_page_retrieved false); the fact is in a table, and four general hosted-MCP pages outrank it"},
+  {"id": "d05", "question": "Which Python version does the generated Python SDK need, and what does it depend on?", "page": "https://docs.latitude10.tech/sdks/python"},
+  {"id": "d07", "question": "How do I serve my docs on my own domain?", "page": "https://docs.latitude10.tech/docs-hosting/custom-domains"},
+  {"id": "d12", "question": "What callback URL do I register with my identity provider for workspace SSO?", "page": "https://docs.latitude10.tech/enterprise/sso"}
+]
